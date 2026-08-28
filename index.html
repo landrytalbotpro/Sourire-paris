@@ -11,10 +11,31 @@
   body{margin:0;padding:0;}
   a{color:#0F5C57;}
   a:hover{color:#FF8B6B;}
+  .nav-links{display:flex; align-items:center; gap:28px;}
   @keyframes float1{0%,100%{transform:translate(0,0) rotate(0deg);}50%{transform:translate(12px,-18px) rotate(8deg);}}
   @keyframes float2{0%,100%{transform:translate(0,0) rotate(0deg);}50%{transform:translate(-14px,14px) rotate(-6deg);}}
+  .burger-btn{display:none; flex-direction:column; justify-content:center; align-items:center; gap:5px; width:40px; height:40px; background:none; border:none; cursor:pointer; padding:0; flex-shrink:0;}
+  .burger-btn span{display:block; width:22px; height:2px; background:#0F5C57; border-radius:2px; transition:transform .25s ease, opacity .25s ease;}
+  .burger-btn.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .burger-btn.open span:nth-child(2){opacity:0;}
+  .burger-btn.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
   @media (max-width: 860px){
-    .nav-links{flex-wrap:wrap; justify-content:center;}
+    .burger-btn{display:flex;}
+    .nav-links{
+      display:none;
+      position:absolute;
+      top:100%;
+      left:0;
+      right:0;
+      flex-direction:column;
+      align-items:center;
+      gap:18px;
+      background:#FBF9F6;
+      padding:28px 32px 32px;
+      border-bottom:1px solid rgba(15,92,87,0.1);
+      box-shadow:0 16px 32px rgba(0,0,0,0.08);
+    }
+    .nav-links.open{display:flex;}
     .hero-grid{grid-template-columns:1fr !important;}
     .hero-copy{text-align:center; align-items:center !important;}
     .hero-cta{justify-content:center;}
@@ -39,7 +60,7 @@
   <header style="position:sticky; top:0; z-index:50; background:rgba(251,249,246,0.92); backdrop-filter:blur(6px); border-bottom:1px solid rgba(15,92,87,0.1);">
     <div style="max-width:1180px; margin:0 auto; padding:18px 32px; display:flex; align-items:center; justify-content:space-between; gap:24px;">
       <a href="#accueil" style="font-family:'Quicksand',sans-serif; font-weight:700; font-size:22px; color:#0F5C57; text-decoration:none;">Sourire Paris</a>
-      <nav class="nav-links" style="display:flex; align-items:center; gap:28px;">
+      <nav class="nav-links">
         <a href="#soins" style="text-decoration:none; color:#1C2624; font-weight:500; font-size:15px;">Soins</a>
         <a href="#approche" style="text-decoration:none; color:#1C2624; font-weight:500; font-size:15px;">Notre approche</a>
         <a href="#equipe" style="text-decoration:none; color:#1C2624; font-weight:500; font-size:15px;">L'équipe</a>
@@ -47,6 +68,9 @@
         <a href="#localisation" style="text-decoration:none; color:#1C2624; font-weight:500; font-size:15px;">Localisation</a>
         <a href="https://wa.me/33612345678" target="_blank" rel="noopener" style="text-decoration:none; background:#FF8B6B; color:#fff; padding:10px 20px; border-radius:100px; font-weight:600; font-size:14px;">Prendre RDV</a>
       </nav>
+      <button class="burger-btn" aria-label="Ouvrir le menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </header>
 
@@ -254,6 +278,26 @@
   </footer>
 
 </div>
+
+<script>
+  (function(){
+    var burgerBtn = document.querySelector('.burger-btn');
+    var navLinks = document.querySelector('.nav-links');
+    if(!burgerBtn || !navLinks) return;
+    burgerBtn.addEventListener('click', function(){
+      var isOpen = navLinks.classList.toggle('open');
+      burgerBtn.classList.toggle('open', isOpen);
+      burgerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+    navLinks.querySelectorAll('a').forEach(function(link){
+      link.addEventListener('click', function(){
+        navLinks.classList.remove('open');
+        burgerBtn.classList.remove('open');
+        burgerBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  })();
+</script>
 
 </body>
 </html>
